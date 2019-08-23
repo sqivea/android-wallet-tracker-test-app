@@ -1,6 +1,8 @@
 package dev.mavexg.wallettracker.utilities;
 
-public class UAHCash {
+import java.io.Serializable;
+
+public class UAHCash implements Serializable {
 
     private int mHryvni;
     private int mKopiyky;

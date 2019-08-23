@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.view.View;
 
+import dev.mavexg.wallettracker.utilities.UAHCash;
+
 public class MainActivity extends AppCompatActivity {
-    private int mCurrentCashe;
+    private UAHCash mCurrentCash;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,10 +24,10 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.button_main_adding).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, OperationActivity.class);
-                intent.putExtra("operation", "adding");
-                intent.putExtra("current_cash", mCurrentCashe);
-                startActivity(intent);
+                Intent toLoad = new Intent(MainActivity.this, OperationActivity.class);
+                toLoad.putExtra("operation", "adding");
+                toLoad.putExtra("current_cash", mCurrentCash);
+                startActivity(toLoad);
             }
         });
 
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, OperationActivity.class);
                 intent.putExtra("operation", "removing");
-                intent.putExtra("current_cash", mCurrentCashe);
+                intent.putExtra("current_cash", mCurrentCash);
                 startActivity(intent);
             }
         });
