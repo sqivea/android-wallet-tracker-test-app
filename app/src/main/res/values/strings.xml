@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Wallet Tracker</string>
+    <string name="default_cash_amount_text">0,0 UAH</string>
+    <string name="textres_button_add">Добавить в кошелёк</string>
+    <string name="textres_button_remove">Взять из кошелька</string>
+    <string name="textres_button_show_list">Просмотреть последние операции</string>
+</resources>
