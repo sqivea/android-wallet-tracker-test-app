@@ -16,6 +16,10 @@ public class UAHCash implements Serializable {
         }
     }
 
+    public UAHCash() {
+        this(0, 0);
+    }
+
     /**
      * @return self
      */
@@ -94,6 +98,6 @@ public class UAHCash implements Serializable {
     public String toString() {
         return mHryvni + ","
                 + (mKopiyky < 10 ? "0" + mKopiyky : mKopiyky)
-                + "UAH";
+                + " UAH";
     }
 }
