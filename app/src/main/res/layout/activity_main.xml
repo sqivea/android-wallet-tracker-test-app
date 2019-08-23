@@ -17,48 +17,48 @@
         android:textColor="@color/cash_amount_text_color"
         android:textSize="36sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toTopOf="@+id/button_main_adding"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/button_main_adding"
         android:layout_width="248dp"
         android:layout_height="80dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/button_add_style"
-        android:text="@string/textres_button_add"
+        android:text="@string/text_button_add"
         android:textColor="@color/button_white_foreground"
-        app:layout_constraintBottom_toTopOf="@+id/button7"
+        app:layout_constraintBottom_toTopOf="@+id/button_main_showing_list"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cash_amount" />
 
     <Button
-        android:id="@+id/button7"
+        android:id="@+id/button_main_showing_list"
         android:layout_width="248dp"
         android:layout_height="80dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/button_add_style"
-        android:text="@string/textres_button_show_list"
+        android:text="@string/text_button_show_list"
         android:textColor="@color/button_white_foreground"
-        app:layout_constraintBottom_toTopOf="@+id/button5"
+        app:layout_constraintBottom_toTopOf="@+id/button_main_removing"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toBottomOf="@+id/button_main_adding" />
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/button_main_removing"
         android:layout_width="248dp"
         android:layout_height="80dp"
         android:layout_marginBottom="100dp"
         android:background="@drawable/button_remove_style"
-        android:text="@string/textres_button_remove"
+        android:text="@string/text_button_remove"
         android:textColor="@color/button_white_foreground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button7" />
+        app:layout_constraintTop_toBottomOf="@+id/button_main_showing_list" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
