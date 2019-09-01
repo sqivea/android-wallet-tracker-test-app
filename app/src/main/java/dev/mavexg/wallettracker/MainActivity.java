@@ -39,7 +39,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void setData() {
         Intent currentIntent = getIntent();
-        if (currentIntent.hasExtra("current_cash")) {
+        if (currentIntent.hasExtra("current_cash")
+                && currentIntent.hasExtra("transactions")) {
             readFromIntentExtras(currentIntent);
         } else {
             readFromAppData();
@@ -72,27 +73,9 @@ public class MainActivity extends AppCompatActivity {
         FileInputStream fis = getApplicationContext().openFileInput(Constants.TRANSACTIONS_DATA_FILE);
         ObjectInputStream ois;
         ois = new ObjectInputStream(fis);
-        writeToTransactionsListSafely(ois.readObject());
+        mTransactions = Transaction.getTransactionsFromObjectSafely(ois.readObject());
         ois.close();
         fis.close();
-    }
-
-    private void writeToTransactionsListSafely(final Object possibleTransactions) {
-        List<Transaction> result = new ArrayList<>();
-        if (possibleTransactions instanceof List) {
-            for (int i = 0; i < ((List<?>) possibleTransactions).size(); ++i) {
-                Object item = ((List<?>) possibleTransactions).get(i);
-                if (item instanceof Transaction) {
-                    result.add((Transaction) item);
-                }
-            }
-        }
-
-        writeToTransactionsListDirectly(result);
-    }
-
-    private void writeToTransactionsListDirectly(final List<Transaction> transactions) {
-        mTransactions = transactions;
     }
 
     private void setUIData() {

@@ -13,7 +13,8 @@ import android.widget.Spinner;
 
 import com.travijuu.numberpicker.library.NumberPicker;
 
-import java.io.FileNotFoundException;
+import org.joda.time.DateTime;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -44,6 +45,7 @@ public class OperationActivity extends AppCompatActivity {
 
         Intent currentIntent = getIntent();
         mCurrentCash = (UAHCash) currentIntent.getSerializableExtra("current_cash");
+        mTransactions = Transaction.getTransactionsFromObjectSafely(currentIntent.getSerializableExtra("transactions"));
         mMode = Objects.requireNonNull(currentIntent.getStringExtra("operation"))
                 .equals("adding") ? Mode.ADDING : Mode.REMOVING;
 
@@ -83,7 +85,7 @@ public class OperationActivity extends AppCompatActivity {
                 }
             }
         };
-        ArrayAdapter<String> tagsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, tags);
+        ArrayAdapter<String> tagsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, tags);
         spinnerTags.setAdapter(tagsAdapter);
     }
 
@@ -94,7 +96,8 @@ public class OperationActivity extends AppCompatActivity {
                 Intent toLoad = new Intent(OperationActivity.this, MainActivity.class);
                 toLoad.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
-                reassignCurrentCash();
+                updateCurrentCash();
+                updateTransactions();
                 saveData();
 
                 toLoad.putExtra("current_cash", mCurrentCash);
@@ -104,7 +107,7 @@ public class OperationActivity extends AppCompatActivity {
         });
     }
 
-    private void reassignCurrentCash() {
+    private void updateCurrentCash() {
         int hryvni = ((NumberPicker) findViewById(R.id.number_picker_hryvni)).getValue();
         int kopiyky = ((NumberPicker) findViewById(R.id.number_picker_kopiyky)).getValue();
         UAHCash toDealWith = new UAHCash(hryvni, kopiyky);
@@ -112,6 +115,19 @@ public class OperationActivity extends AppCompatActivity {
             mCurrentCash.plus(toDealWith);
         } else {
             mCurrentCash.minus(toDealWith);
+        }
+    }
+
+    private void updateTransactions() {
+        mTransactions.add(new Transaction(
+                mMode == Mode.ADDING ? "Получено" : "Взято",
+                ((Spinner) findViewById(R.id.spinnerTags)).getSelectedItem().toString(),
+                mCurrentCash,
+                DateTime.now()
+        ));
+
+        if (mTransactions.size() > 50) {
+            mTransactions.remove(mTransactions.get(0));
         }
     }
 

@@ -3,6 +3,8 @@ package dev.mavexg.wallettracker.utilities;
 import org.joda.time.DateTime;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Transaction implements Serializable {
 
@@ -35,6 +37,19 @@ public class Transaction implements Serializable {
 
     public DateTime getmTransactionTime() {
         return mTransactionTime;
+    }
+
+    public static List<Transaction> getTransactionsFromObjectSafely(final Object object) {
+        List<Transaction> result = new ArrayList<>();
+        if (object instanceof List) {
+            for (int i = 0; i < ((List<?>) object).size(); ++i) {
+                Object item = ((List<?>) object).get(i);
+                if (item instanceof Transaction) {
+                    result.add((Transaction) item);
+                }
+            }
+        }
+        return result;
     }
 
 }
