@@ -21,12 +21,13 @@ public class TransactionsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_transactions);
 
         mTransactions = Transaction.getTransactionsFromObjectSafely(getIntent().getSerializableExtra("transactions"));
+        setupRecycler();
     }
 
     private void setupRecycler() {
         RecyclerView transactionsView = findViewById(R.id.transactionsView);
         transactionsView.setHasFixedSize(true);
         transactionsView.setLayoutManager(new LinearLayoutManager(this));
-        transactionsView.setAdapter(new TransactionsViewAdapter());
+        transactionsView.setAdapter(new TransactionsViewAdapter(mTransactions));
     }
 }

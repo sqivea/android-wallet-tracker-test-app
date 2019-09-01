@@ -58,7 +58,7 @@ public class OperationActivity extends AppCompatActivity {
 
         switch (mMode) {
             case ADDING:
-                findViewById(R.id.spinnerTags).setVisibility(View.INVISIBLE);
+                //findViewById(R.id.spinnerTags).setVisibility(View.INVISIBLE);
                 break;
             case REMOVING:
             default:

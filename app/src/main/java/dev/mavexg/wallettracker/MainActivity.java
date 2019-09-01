@@ -96,12 +96,25 @@ public class MainActivity extends AppCompatActivity {
                 loadOperationActivity("removing");
             }
         });
+
+        findViewById(R.id.button_main_showing_list).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadShowListActivity();
+            }
+        });
     }
 
     private void loadOperationActivity(final String operation) {
         Intent toLoad = new Intent(MainActivity.this, OperationActivity.class);
         toLoad.putExtra("operation", operation);
         toLoad.putExtra("current_cash", mCurrentCash);
+        toLoad.putExtra("transactions", (ArrayList<Transaction>) mTransactions);
+        startActivity(toLoad);
+    }
+
+    private void loadShowListActivity() {
+        Intent toLoad = new Intent(MainActivity.this, TransactionsActivity.class);
         toLoad.putExtra("transactions", (ArrayList<Transaction>) mTransactions);
         startActivity(toLoad);
     }
