@@ -9,12 +9,15 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import dev.mavexg.wallettracker.utilities.Constants;
+import dev.mavexg.wallettracker.utilities.Transaction;
 import dev.mavexg.wallettracker.utilities.UAHCash;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String CLASS_TAG = "MainActivity";
 
     private UAHCash mCurrentCash = new UAHCash();
+    private List<Transaction> mTransactions = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,15 +52,46 @@ public class MainActivity extends AppCompatActivity {
 
     private void readFromAppData() {
         try {
-            FileInputStream fis = getApplicationContext().openFileInput(Constants.DATA_FILE);
-            ObjectInputStream ois;
-            ois = new ObjectInputStream(fis);
-            mCurrentCash = (UAHCash) ois.readObject();
-            ois.close();
-            fis.close();
+            readCashData();
         } catch (IOException | ClassNotFoundException e) {
             Log.e(CLASS_TAG, Objects.requireNonNull(e.getMessage()));
         }
+    }
+
+    private void readCashData() throws IOException, ClassNotFoundException {
+        FileInputStream fis = getApplicationContext().openFileInput(Constants.CASH_DATA_FILE);
+        ObjectInputStream ois;
+        ois = new ObjectInputStream(fis);
+        mCurrentCash = (UAHCash) ois.readObject();
+        ois.close();
+        fis.close();
+    }
+
+    private void readTransactionsData() throws IOException, ClassNotFoundException {
+        FileInputStream fis = getApplicationContext().openFileInput(Constants.TRANSACTIONS_DATA_FILE);
+        ObjectInputStream ois;
+        ois = new ObjectInputStream(fis);
+        writeToTransactionsList(ois.readObject());
+        ois.close();
+        fis.close();
+    }
+
+    private void writeToTransactionsList(final List<Transaction> transactions) {
+        mTransactions = transactions;
+    }
+
+    private void writeToTransactionsList(final Object possibleTransactions) {
+        List<Transaction> result = new ArrayList<>();
+        if (possibleTransactions instanceof List) {
+            for (int i = 0; i < ((List<?>) possibleTransactions).size(); ++i) {
+                Object item = ((List<?>) possibleTransactions).get(i);
+                if (item instanceof Transaction) {
+                    result.add((Transaction) item);
+                }
+            }
+        }
+
+        writeToTransactionsList(result);
     }
 
     private void setUIData() {

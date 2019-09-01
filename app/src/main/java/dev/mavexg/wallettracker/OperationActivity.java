@@ -9,8 +9,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.travijuu.numberpicker.library.Enums.ActionEnum;
-import com.travijuu.numberpicker.library.Interface.ValueChangedListener;
 import com.travijuu.numberpicker.library.NumberPicker;
 
 import java.io.FileOutputStream;
@@ -82,7 +80,7 @@ public class OperationActivity extends AppCompatActivity {
     private void saveData() {
         FileOutputStream fos;
         try {
-            fos = getApplicationContext().openFileOutput(Constants.DATA_FILE, Context.MODE_PRIVATE);
+            fos = getApplicationContext().openFileOutput(Constants.CASH_DATA_FILE, Context.MODE_PRIVATE);
             ObjectOutputStream os = new ObjectOutputStream(fos);
             os.writeObject(mCurrentCash);
             os.close();
