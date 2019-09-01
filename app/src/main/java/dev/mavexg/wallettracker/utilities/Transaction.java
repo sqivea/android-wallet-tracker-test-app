@@ -1,5 +1,7 @@
 package dev.mavexg.wallettracker.utilities;
 
+import androidx.annotation.NonNull;
+
 import org.joda.time.DateTime;
 
 import java.io.Serializable;
@@ -23,22 +25,6 @@ public class Transaction implements Serializable {
         this.mTransactionTime = transactionTime;
     }
 
-    public String getmType() {
-        return mType;
-    }
-
-    public String getTag() {
-        return mTag;
-    }
-
-    public UAHCash getmCash() {
-        return mCash;
-    }
-
-    public DateTime getmTransactionTime() {
-        return mTransactionTime;
-    }
-
     public static List<Transaction> getTransactionsFromObjectSafely(final Object object) {
         List<Transaction> result = new ArrayList<>();
         if (object instanceof List) {
@@ -52,4 +38,9 @@ public class Transaction implements Serializable {
         return result;
     }
 
+    @NonNull
+    @Override
+    public String toString() {
+        return mType + ": " + mCash.toString() + " (" + mTag + "), " + mTransactionTime.toString();
+    }
 }
