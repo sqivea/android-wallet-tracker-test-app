@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 
 import com.travijuu.numberpicker.library.NumberPicker;
 
@@ -33,7 +35,7 @@ public class OperationActivity extends AppCompatActivity {
 
     private UAHCash mCurrentCash = new UAHCash();
     private List<Transaction> mTransactions = new ArrayList<>();
-    private Mode mMode = Mode.ADDING;
+    private Mode mMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,17 +44,47 @@ public class OperationActivity extends AppCompatActivity {
 
         Intent currentIntent = getIntent();
         mCurrentCash = (UAHCash) currentIntent.getSerializableExtra("current_cash");
-        setupMode(Objects.requireNonNull(currentIntent.getStringExtra("operation")));
+        mMode = Objects.requireNonNull(currentIntent.getStringExtra("operation"))
+                .equals("adding") ? Mode.ADDING : Mode.REMOVING;
+
+        setupMode();
         setListeners();
     }
 
-    private void setupMode(final String operation) {
-        if (operation.equals("removing")) {
-            mMode = Mode.REMOVING;
-            Button button = findViewById(R.id.button_operation_direct);
-            button.setBackground(getResources().getDrawable(R.drawable.button_remove_style));
-            button.setText(R.string.text_button_remove_direct);
+    private void setupMode() {
+        setupSpinner();
+
+        switch (mMode) {
+            case ADDING:
+                findViewById(R.id.spinnerTags).setVisibility(View.INVISIBLE);
+                break;
+            case REMOVING:
+            default:
+                Button button = findViewById(R.id.button_operation_direct);
+                button.setBackground(getResources().getDrawable(R.drawable.button_remove_style));
+                button.setText(R.string.text_button_remove_direct);
         }
+    }
+
+    private void setupSpinner() {
+        Spinner spinnerTags = findViewById(R.id.spinnerTags);
+        List<String> tags = new ArrayList<String>() {
+            {
+                if (mMode == Mode.ADDING) {
+                    add("Получено");
+                } else {
+                    add("Еда");
+                    add("Одежда");
+                    add("Для души");
+                    add("Утилити");
+                    add("Проезд/пропуск");
+                    add("На других");
+                    add("Утрачено");
+                }
+            }
+        };
+        ArrayAdapter<String> tagsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, tags);
+        spinnerTags.setAdapter(tagsAdapter);
     }
 
     private void setListeners() {
