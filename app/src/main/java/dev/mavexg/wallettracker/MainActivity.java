@@ -9,9 +9,9 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private void readFromAppData() {
         try {
             readCashData();
+            readTransactionsData();
         } catch (IOException | ClassNotFoundException e) {
             Log.e(CLASS_TAG, Objects.requireNonNull(e.getMessage()));
         }
@@ -71,16 +72,12 @@ public class MainActivity extends AppCompatActivity {
         FileInputStream fis = getApplicationContext().openFileInput(Constants.TRANSACTIONS_DATA_FILE);
         ObjectInputStream ois;
         ois = new ObjectInputStream(fis);
-        writeToTransactionsList(ois.readObject());
+        writeToTransactionsListSafely(ois.readObject());
         ois.close();
         fis.close();
     }
 
-    private void writeToTransactionsList(final List<Transaction> transactions) {
-        mTransactions = transactions;
-    }
-
-    private void writeToTransactionsList(final Object possibleTransactions) {
+    private void writeToTransactionsListSafely(final Object possibleTransactions) {
         List<Transaction> result = new ArrayList<>();
         if (possibleTransactions instanceof List) {
             for (int i = 0; i < ((List<?>) possibleTransactions).size(); ++i) {
@@ -91,7 +88,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        writeToTransactionsList(result);
+        writeToTransactionsListDirectly(result);
+    }
+
+    private void writeToTransactionsListDirectly(final List<Transaction> transactions) {
+        mTransactions = transactions;
     }
 
     private void setUIData() {
@@ -102,21 +103,23 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.button_main_adding).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent toLoad = new Intent(MainActivity.this, OperationActivity.class);
-                toLoad.putExtra("operation", "adding");
-                toLoad.putExtra("current_cash", mCurrentCash);
-                startActivity(toLoad);
+                loadOperationActivity("adding");
             }
         });
 
         findViewById(R.id.button_main_removing).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, OperationActivity.class);
-                intent.putExtra("operation", "removing");
-                intent.putExtra("current_cash", mCurrentCash);
-                startActivity(intent);
+                loadOperationActivity("removing");
             }
         });
+    }
+
+    private void loadOperationActivity(final String operation) {
+        Intent toLoad = new Intent(MainActivity.this, OperationActivity.class);
+        toLoad.putExtra("operation", operation);
+        toLoad.putExtra("current_cash", mCurrentCash);
+        toLoad.putExtra("transactions", (ArrayList<Transaction>) mTransactions);
+        startActivity(toLoad);
     }
 }

@@ -11,12 +11,16 @@ import android.widget.Button;
 
 import com.travijuu.numberpicker.library.NumberPicker;
 
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import dev.mavexg.wallettracker.utilities.Constants;
+import dev.mavexg.wallettracker.utilities.Transaction;
 import dev.mavexg.wallettracker.utilities.UAHCash;
 
 public class OperationActivity extends AppCompatActivity {
@@ -28,6 +32,7 @@ public class OperationActivity extends AppCompatActivity {
     }
 
     private UAHCash mCurrentCash = new UAHCash();
+    private List<Transaction> mTransactions = new ArrayList<>();
     private Mode mMode = Mode.ADDING;
 
     @Override
@@ -61,6 +66,7 @@ public class OperationActivity extends AppCompatActivity {
                 saveData();
 
                 toLoad.putExtra("current_cash", mCurrentCash);
+                toLoad.putExtra("transactions", (ArrayList<Transaction>) mTransactions);
                 startActivity(toLoad);
             }
         });
@@ -78,15 +84,29 @@ public class OperationActivity extends AppCompatActivity {
     }
 
     private void saveData() {
-        FileOutputStream fos;
         try {
-            fos = getApplicationContext().openFileOutput(Constants.CASH_DATA_FILE, Context.MODE_PRIVATE);
-            ObjectOutputStream os = new ObjectOutputStream(fos);
-            os.writeObject(mCurrentCash);
-            os.close();
-            fos.close();
+            saveCashData();
+            saveTransactionsData();
         } catch (IOException e) {
             Log.e(CLASS_TAG, Objects.requireNonNull(e.getMessage()));
         }
+    }
+
+    private void saveCashData() throws IOException {
+        FileOutputStream fos;
+        fos = getApplicationContext().openFileOutput(Constants.CASH_DATA_FILE, Context.MODE_PRIVATE);
+        ObjectOutputStream os = new ObjectOutputStream(fos);
+        os.writeObject(mCurrentCash);
+        os.close();
+        fos.close();
+    }
+
+    private void saveTransactionsData() throws IOException {
+        FileOutputStream fos;
+        fos = getApplicationContext().openFileOutput(Constants.TRANSACTIONS_DATA_FILE, Context.MODE_PRIVATE);
+        ObjectOutputStream os = new ObjectOutputStream(fos);
+        os.writeObject(mTransactions);
+        os.close();
+        fos.close();
     }
 }
