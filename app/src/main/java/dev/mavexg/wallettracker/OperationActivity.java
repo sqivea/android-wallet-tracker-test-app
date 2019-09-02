@@ -82,6 +82,7 @@ public class OperationActivity extends AppCompatActivity {
                     add("Проезд/пропуск");
                     add("На других");
                     add("Утрачено");
+                    add("Техническое удаление");
                 }
             }
         };
