@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import dev.mavexg.wallettracker.utilities.Transaction;
@@ -21,6 +22,7 @@ public class TransactionsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_transactions);
 
         mTransactions = Transaction.getTransactionsFromObjectSafely(getIntent().getSerializableExtra("transactions"));
+        Collections.reverse(mTransactions);
         setupRecycler();
     }
 
