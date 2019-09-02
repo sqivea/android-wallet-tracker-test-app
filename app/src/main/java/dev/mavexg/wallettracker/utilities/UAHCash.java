@@ -1,5 +1,7 @@
 package dev.mavexg.wallettracker.utilities;
 
+import androidx.annotation.NonNull;
+
 import java.io.Serializable;
 
 public class UAHCash implements Serializable {
@@ -94,10 +96,11 @@ public class UAHCash implements Serializable {
                 mKopiyky == uahCash.mKopiyky;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return mHryvni + ","
                 + (mKopiyky < 10 ? "0" + mKopiyky : mKopiyky)
-                + " UAH";
+                + "₴";
     }
 }

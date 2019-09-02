@@ -3,6 +3,7 @@ package dev.mavexg.wallettracker.utilities;
 import androidx.annotation.NonNull;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ public class Transaction implements Serializable {
     @NonNull
     @Override
     public String toString() {
-        return mType + mCash.toString() + " (" + mTag + "), " + mTransactionTime.toString();
+        return mType + mCash.toString() + " (" + mTag + "), "
+                + DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").print(mTransactionTime);
     }
 }
