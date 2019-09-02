@@ -41,6 +41,6 @@ public class Transaction implements Serializable {
     @NonNull
     @Override
     public String toString() {
-        return mType + ": " + mCash.toString() + " (" + mTag + "), " + mTransactionTime.toString();
+        return mType + mCash.toString() + " (" + mTag + "), " + mTransactionTime.toString();
     }
 }

@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void readFromIntentExtras(final Intent currentIntent) {
         mCurrentCash = (UAHCash) currentIntent.getSerializableExtra("current_cash");
+        mTransactions = Transaction.getTransactionsFromObjectSafely(currentIntent.getSerializableExtra("transactions"));
     }
 
     private void readFromAppData() {

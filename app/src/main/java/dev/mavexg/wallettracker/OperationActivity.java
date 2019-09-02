@@ -125,7 +125,7 @@ public class OperationActivity extends AppCompatActivity {
 
     private void updateTransactions() {
         mTransactions.add(new Transaction(
-                mMode == Mode.ADDING ? "Получено" : "Взято",
+                mMode == Mode.ADDING ? "+" : "-",
                 ((Spinner) findViewById(R.id.spinnerTags)).getSelectedItem().toString(),
                 getCashToDealWith(),
                 DateTime.now()
