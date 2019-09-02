@@ -11,12 +11,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".TransactionsActivity"></activity>
-        <activity android:name=".OperationActivity" />
+        <activity
+            android:name=".TransactionsActivity"
+            android:noHistory="true" />
+        <activity
+            android:name=".OperationActivity"
+            android:noHistory="true" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -58,7 +58,7 @@ public class OperationActivity extends AppCompatActivity {
 
         switch (mMode) {
             case ADDING:
-                //findViewById(R.id.spinnerTags).setVisibility(View.INVISIBLE);
+                findViewById(R.id.spinnerTags).setVisibility(View.INVISIBLE);
                 break;
             case REMOVING:
             default:
@@ -94,7 +94,8 @@ public class OperationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent toLoad = new Intent(OperationActivity.this, MainActivity.class);
-                toLoad.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                toLoad.addCategory(Intent.CATEGORY_HOME);
+                toLoad.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
                 updateCurrentCash();
                 updateTransactions();
@@ -107,10 +108,14 @@ public class OperationActivity extends AppCompatActivity {
         });
     }
 
-    private void updateCurrentCash() {
+    private UAHCash getCashToDealWith() {
         int hryvni = ((NumberPicker) findViewById(R.id.number_picker_hryvni)).getValue();
         int kopiyky = ((NumberPicker) findViewById(R.id.number_picker_kopiyky)).getValue();
-        UAHCash toDealWith = new UAHCash(hryvni, kopiyky);
+        return new UAHCash(hryvni, kopiyky);
+    }
+
+    private void updateCurrentCash() {
+        UAHCash toDealWith = getCashToDealWith();
         if (mMode == Mode.ADDING) {
             mCurrentCash.plus(toDealWith);
         } else {
@@ -122,7 +127,7 @@ public class OperationActivity extends AppCompatActivity {
         mTransactions.add(new Transaction(
                 mMode == Mode.ADDING ? "Получено" : "Взято",
                 ((Spinner) findViewById(R.id.spinnerTags)).getSelectedItem().toString(),
-                mCurrentCash,
+                getCashToDealWith(),
                 DateTime.now()
         ));
 
